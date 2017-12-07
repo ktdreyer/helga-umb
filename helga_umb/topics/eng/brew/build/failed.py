@@ -1,0 +1,14 @@
+""" Announce Brew builds as they fail """
+import helga_umb.topics.eng.brew.build as build
+
+
+def consume(client, channel, frame):
+    nvr = build.nvr(frame)
+    owner_name = build.owner_name(frame)
+    build_url = build.build_url(frame)
+
+    mtmpl = "{owner_name}'s {nvr} failed ({build_url})"
+    message = mtmpl.format(owner_name=owner_name,
+                           nvr=nvr,
+                           build_url=build_url)
+    client.msg(channel, message)
