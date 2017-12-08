@@ -77,6 +77,7 @@ class HelgaStompConsumer():
             '/topic/VirtualTopic.qe.ci.fedmsg',
             '/topic/VirtualTopic.qe.ci.pub',
             '/topic/VirtualTopic.qe.ci.rcm',
+            '/topic/VirtualTopic.qe.ci.rhchi',
             '/topic/VirtualTopic.qe.ci.rpmdiff',
             '/topic/VirtualTopic.qe.ci.upload-ami',
         ]
