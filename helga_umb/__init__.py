@@ -49,35 +49,35 @@ class HelgaStompConsumer():
         Return False if we should ignore this entirely.
         """
         IGNORE_PREFIX = [
+            '/topic/VirtualTopic.eng.brew.build.deleted',
+            '/topic/VirtualTopic.eng.brew.build.untag',
             '/topic/VirtualTopic.eng.brew.import',
+            '/topic/VirtualTopic.eng.brew.package',
             '/topic/VirtualTopic.eng.brew.repo',
             '/topic/VirtualTopic.eng.brew.sign',
             '/topic/VirtualTopic.eng.brew.task',
-            '/topic/VirtualTopic.eng.brew.build.untag',
-            '/topic/VirtualTopic.eng.brew.build.deleted',
-            '/topic/VirtualTopic.eng.brew.package',
             '/topic/VirtualTopic.eng.distill.compose-moved',
             '/topic/VirtualTopic.eng.errata-bridge',
             '/topic/VirtualTopic.eng.errata.activity.batch',
             '/topic/VirtualTopic.eng.errata.builds.added',
-            '/topic/VirtualTopic.eng.errata.builds.removed',
             '/topic/VirtualTopic.eng.errata.builds.changed',
+            '/topic/VirtualTopic.eng.errata.builds.removed',
             '/topic/VirtualTopic.eng.metaxor',
-            '/topic/VirtualTopic.eng.rpmdiff',
+            '/topic/VirtualTopic.eng.platformci',
             '/topic/VirtualTopic.eng.pub',
             '/topic/VirtualTopic.eng.pungi.createiso',
             '/topic/VirtualTopic.eng.pungi.phase',
-            '/topic/VirtualTopic.eng.platformci',
             '/topic/VirtualTopic.eng.rhchi', # Container Health Index
+            '/topic/VirtualTopic.eng.rpmdiff',
             '/topic/VirtualTopic.eng.tps', # This is for "ci-tps", see rpm-factory-jenkins
             '/topic/VirtualTopic.qe.ci.brew',  # Mirrors everything from brew
+            '/topic/VirtualTopic.qe.ci.create-task-repo',
             '/topic/VirtualTopic.qe.ci.distgit',
             '/topic/VirtualTopic.qe.ci.errata',
             '/topic/VirtualTopic.qe.ci.fedmsg',
             '/topic/VirtualTopic.qe.ci.pub',
-            '/topic/VirtualTopic.qe.ci.create-task-repo',
-            '/topic/VirtualTopic.qe.ci.rpmdiff',
             '/topic/VirtualTopic.qe.ci.rcm',
+            '/topic/VirtualTopic.qe.ci.rpmdiff',
             '/topic/VirtualTopic.qe.ci.upload-ami',
         ]
         for prefix in IGNORE_PREFIX:
