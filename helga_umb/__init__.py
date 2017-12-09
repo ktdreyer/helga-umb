@@ -99,7 +99,7 @@ class HelgaStompConsumer():
             # logger.debug('ignoring %s' % destination)  # noisy
             return
 
-        # self.pprint_frame(frame)  # Noisy
+        # pprint_frame(frame)  # Noisy
 
         # Route this destination to a lib under helga_umb.topics.
         topiclib = 'helga_umb.topics.%s' % destination[20:].replace('-', '_')
@@ -110,7 +110,7 @@ class HelgaStompConsumer():
             # Show the raw destination value.
             self.client.msg(self.channel, destination)
             # logger.debug(e)  # debugging
-            self.pprint_frame(frame)  # debugging
+            pprint_frame(frame)  # debugging
             if e.message.startswith('No module named'):
                 # We have no custom code to consume this message.
                 # This is ok, just move on.
@@ -122,34 +122,35 @@ class HelgaStompConsumer():
                 raise
         return lib.consume(self.client, self.channel, frame)
 
-    def pprint_frame(self, frame):
-        """ Debugging: pretty-print the whole frame to STDOUT. """
-        pprint(frame.headers)
-        try:
-            body = frame.body.decode()
-        except UnicodeDecodeError as e:
-            # This could be a bug in the sending application, for example
-            # METAXOR-1147 where the body is binary AMQP data.
-            if frame.body:
-                logger.error('Could not decode body text: %s' % e)
-                pprint(frame.body)
-            return
-        try:
-            data = json.loads(body)
-        except ValueError as e:
-            # Some applications do not send bodies:
-            # - For example, VirtualTopic.qe.ci.jenkins messages do not always
-            #   (ever?) have bodies.
-            # - Other times this could be a bug in the sending application,
-            #   for example, https://bugzilla.redhat.com/1458120 where the
-            #   bodies are missing entirely.
-            # Only log if we have a non-JSON body string to cut down on the
-            # possible noise.
-            if frame.body:
-                logger.error('Could not decode JSON in body: %s' % e)
-                logger.error('Plain decoded non-JSON body: %s' % body)
-            return
-        pprint(data)
+
+def pprint_frame(frame):
+    """ Debugging: pretty-print the whole frame to STDOUT. """
+    pprint(frame.headers)
+    try:
+        body = frame.body.decode()
+    except UnicodeDecodeError as e:
+        # This could be a bug in the sending application, for example
+        # METAXOR-1147 where the body is binary AMQP data.
+        if frame.body:
+            logger.error('Could not decode body text: %s' % e)
+            pprint(frame.body)
+        return
+    try:
+        data = json.loads(body)
+    except ValueError as e:
+        # Some applications do not send bodies:
+        # - For example, VirtualTopic.qe.ci.jenkins messages do not always
+        #   (ever?) have bodies.
+        # - Other times this could be a bug in the sending application,
+        #   for example, https://bugzilla.redhat.com/1458120 where the
+        #   bodies are missing entirely.
+        # Only log if we have a non-JSON body string to cut down on the
+        # possible noise.
+        if frame.body:
+            logger.error('Could not decode JSON in body: %s' % e)
+            logger.error('Plain decoded non-JSON body: %s' % body)
+        return
+    pprint(data)
 
 
 def stomp_connection(client, channel):
