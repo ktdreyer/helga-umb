@@ -230,8 +230,7 @@ def listener_err(connection, e, frame, _):
     :param e:          Exception raised from ``SubscriptionListener`` consumer
     :param frame:      message on which this Exception was raised.
     """
-    # XXX: pprint_frame the whole frame as well?
-    #      Will need to move pprinter out of HelgaStompConsumer
+    pprint_frame(frame)
     import sys
     import traceback
     import os
