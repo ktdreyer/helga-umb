@@ -26,15 +26,14 @@ def hostname_from_message_id(message_id):
 def consume(client, channel, frame):
     # These are always present:
     ci_name = frame.headers['CI_NAME']  # "jobname"
-    ci_status = frame.headers['CI_STATUS']  # "passed"
     ci_type = frame.headers['CI_TYPE']  # "tier-0-testing-done"
 
-    # This is not always present.
+    # "CI_USER" and "CI_STATUS" are not always present.
     # I'm guessing this depends on whether "ci-publish" is a build step or
-    # post-build step. Maybe the Jenkins plugin only sets this header when
-    # "ci-publisher" is a build step? Need to experiment to verify (or read the
+    # post-build step. Need to experiment to verify (or read the
     # JMS plugin source).
     ci_user = frame.headers.get('CI_USER')  # "atomic-e2e-jenkins", or None
+    ci_status = frame.headers.get('CI_STATUS')  # "passed", or None
 
     mtmpl = "{ci_user}'s job {ci_name} {ci_status} {ci_type}"
 
@@ -48,6 +47,9 @@ def consume(client, channel, frame):
         # Unable to determine where this job is running.
         # Use a more general template.
         mtmpl = "jenkins job {ci_name} {ci_status} {ci_type}"
+
+    if ci_status is None:
+        ci_status = 'ran'
 
     # Many messages have a "github_pull_link" header.
     if 'github_pull_link' in frame.headers:
