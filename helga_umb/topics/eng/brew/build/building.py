@@ -1,10 +1,11 @@
 """ Announce Brew builds starting. """
+import helga_umb.topics.eng.brew as brew
 import helga_umb.topics.eng.brew.build as build
 
 
 def consume(client, channel, frame):
     nvr = build.nvr(frame)
-    owner_name = build.owner_name(frame)
+    owner_name = brew.owner_name(frame)
     build_url = build.build_url(frame)
 
     mtmpl = "{owner_name}'s {nvr} started building ({build_url})"
