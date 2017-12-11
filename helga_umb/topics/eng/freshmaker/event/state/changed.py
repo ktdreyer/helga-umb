@@ -3,8 +3,8 @@ import json
 
 
 def consume(client, channel, frame):
-    state_name = frame.headers['state_name']
     data = json.loads(frame.body.decode())
+    state_name = data['state_name']
     mtmpl = 'freshmaker {state_name}'
 
     # Not sure if this key is always present in the body.
