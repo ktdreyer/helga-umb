@@ -237,11 +237,12 @@ def listener_err(connection, e, frame, _):
     ex_type, ex, tb = sys.exc_info()
     (filename, lineno, method, text) = traceback.extract_tb(tb)[-1]
     del tb
-    msg = '{filename}:{lineno}: {ex_type} {text}'.format(
+    msg = '{filename}:{lineno}: {text} {ex_type} {ex}'.format(
         filename=os.path.relpath(filename),
         lineno=lineno,
+        text=text,
         ex_type=ex_type,
-        text=text)
+        ex=ex)
     logger.error(msg)
 
 
