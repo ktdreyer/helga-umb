@@ -12,7 +12,7 @@ def consume(client, channel, frame):
     # Shorten any system account FQDN here for readability.
     if '.' in user:
         (user, _) = user.split('.', 1)
-    nvr = build.nvr(frame)
+    nvr = build.get_nvr(frame)
     mtmpl = '{user} tagged {nvr} in {tag}'
     message = mtmpl.format(user=user, nvr=nvr, tag=tag)
     client.msg(channel, message)
