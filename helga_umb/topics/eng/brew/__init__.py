@@ -64,8 +64,7 @@ def owner_name(frame):
         # Try the local disk cache first before querying brewhub
         owner_name = cached_owner_name(owner_id)
         if not owner_name:
-            # xml-rpc getUser call to brewhub
-            d = koji.get_user(owner_id)
+            d = koji.getUser(owner_id)
             d.addCallback(owner_callback)
             return d
     owner = Munch(id=owner_id, name=owner_name)
@@ -114,7 +113,7 @@ def tag_name(tag_id):
         tag = Munch(id=tag_id, name=cache)
         d = defer.succeed(tag)
     else:
-        d = koji.get_tag(tag_id)
+        d = koji.getTag(tag_id)
     d.addCallback(tag_callback)
     return d
 
