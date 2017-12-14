@@ -1,4 +1,5 @@
 """ Announce dist-git commits. """
+import sys
 import json
 
 
@@ -12,6 +13,10 @@ def consume(client, channel, frame):
 
     data = json.loads(frame.body.decode())
     summary = data['summary']
+
+    # This could have unicode that needs an explicit conversion on py2.
+    if sys.version_info.major < 3:
+        summary = summary.encode('utf-8')
 
     utmpl = ('http://pkgs.devel.redhat.com/cgit/{namespace}/{repo}'
              '/commit/?h={branch}&id={rev}')
