@@ -66,7 +66,7 @@ class HelgaStompConsumer():
             '/topic/VirtualTopic.eng.pub',
             '/topic/VirtualTopic.eng.pungi.createiso',
             '/topic/VirtualTopic.eng.pungi.phase',
-            '/topic/VirtualTopic.eng.rhchi', # Container Health Index
+            '/topic/VirtualTopic.eng.rhchi',  # Container Health Index
             '/topic/VirtualTopic.eng.rpmdiff',
             '/topic/VirtualTopic.eng.cips',  # TPS replacement
             '/topic/VirtualTopic.qe.ci.brew',  # Mirrors everything from brew
