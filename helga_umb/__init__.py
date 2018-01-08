@@ -68,7 +68,7 @@ class HelgaStompConsumer():
             '/topic/VirtualTopic.eng.pungi.phase',
             '/topic/VirtualTopic.eng.rhchi', # Container Health Index
             '/topic/VirtualTopic.eng.rpmdiff',
-            '/topic/VirtualTopic.eng.tps', # This is for "ci-tps", see rpm-factory-jenkins
+            '/topic/VirtualTopic.eng.cips',  # TPS replacement
             '/topic/VirtualTopic.qe.ci.brew',  # Mirrors everything from brew
             '/topic/VirtualTopic.qe.ci.create-task-repo',
             '/topic/VirtualTopic.qe.ci.distgit',
