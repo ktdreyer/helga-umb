@@ -101,7 +101,7 @@ def consume(client, channel, frame):
     # "tagBuild" is already covered separately by brew.build.tag messages.
     # "createrepo" is too low-level, newRepo is too noisy.
     if task.method in ('buildNotification', 'tagNotification', 'tagBuild',
-                       'createrepo', 'newRepo'):
+                       'createrepo', 'newRepo', 'buildArch'):
         return
 
     owner_name = yield brew.owner_name(frame)
