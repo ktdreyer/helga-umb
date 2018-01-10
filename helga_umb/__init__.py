@@ -55,6 +55,7 @@ class HelgaStompConsumer():
             '/topic/VirtualTopic.eng.brew.package',
             '/topic/VirtualTopic.eng.brew.repo',
             '/topic/VirtualTopic.eng.brew.sign',
+            '/topic/VirtualTopic.eng.cips',  # TPS replacement
             '/topic/VirtualTopic.eng.distill',
             '/topic/VirtualTopic.eng.errata-bridge',
             '/topic/VirtualTopic.eng.errata.activity.batch',
@@ -68,7 +69,6 @@ class HelgaStompConsumer():
             '/topic/VirtualTopic.eng.pungi.phase',
             '/topic/VirtualTopic.eng.rhchi',  # Container Health Index
             '/topic/VirtualTopic.eng.rpmdiff',
-            '/topic/VirtualTopic.eng.cips',  # TPS replacement
             '/topic/VirtualTopic.qe.ci.brew',  # Mirrors everything from brew
             '/topic/VirtualTopic.qe.ci.create-task-repo',
             '/topic/VirtualTopic.qe.ci.distgit',
