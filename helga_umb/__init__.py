@@ -68,6 +68,7 @@ class HelgaStompConsumer():
             '/topic/VirtualTopic.eng.pungi.createiso',
             '/topic/VirtualTopic.eng.pungi.phase',
             '/topic/VirtualTopic.eng.rhchi',  # Container Health Index
+            '/topic/VirtualTopic.eng.rpmdeplint',  # TPS replacement
             '/topic/VirtualTopic.eng.rpmdiff',
             '/topic/VirtualTopic.qe.ci.brew',  # Mirrors everything from brew
             '/topic/VirtualTopic.qe.ci.create-task-repo',
