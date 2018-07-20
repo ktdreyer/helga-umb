@@ -1,23 +1,20 @@
 from pprint import pprint
+import re
 import json
 import logging
-import importlib
 
 import smokesignal
 
 from helga.plugins import command
 from helga import log, settings
 
-from twisted.internet import defer
-
 from stompest.config import StompConfig
 from stompest.protocol import StompSpec
 
 from stompest.async import Stomp
 from stompest.async.listener import SubscriptionListener
-from stompest.async.listener import ErrorListener
-from stompest.error import StompProtocolError
 
+from helga_umb import datagrepper
 
 # prod with failover
 STOMP_URL = 'failover:(ssl://messaging-devops-broker01.web.prod.ext.phx2.redhat.com:61612,ssl://messaging-devops-broker02.web.prod.ext.phx2.redhat.com:61612)?startupMaxReconnectAttempts=10'  # NOQA: E501
@@ -27,6 +24,10 @@ STOMP_URL = 'failover:(ssl://messaging-devops-broker01.web.prod.ext.phx2.redhat.
 
 # dev
 # STOMP_URL = 'ssl://messaging-devops-broker01.dev1.ext.devlab.redhat.com:61612'
+
+
+# Load our built-in signals:
+import helga_umb.signals
 
 
 logger = log.getLogger(__name__)
@@ -50,6 +51,7 @@ class HelgaStompConsumer():
         """
         IGNORE_PREFIX = [
             '/topic/VirtualTopic.eng.brew.build.deleted',
+            '/topic/VirtualTopic.eng.brew.build.tag',
             '/topic/VirtualTopic.eng.brew.build.untag',
             '/topic/VirtualTopic.eng.brew.import',
             '/topic/VirtualTopic.eng.brew.package',
@@ -71,6 +73,7 @@ class HelgaStompConsumer():
             '/topic/VirtualTopic.eng.rpmdeplint',  # TPS replacement
             '/topic/VirtualTopic.eng.rpmdiff',
             '/topic/VirtualTopic.qe.ci.brew',  # Mirrors everything from brew
+            '/topic/VirtualTopic.qe.ci.brew-build',  # some kinda "tests"
             '/topic/VirtualTopic.qe.ci.create-task-repo',
             '/topic/VirtualTopic.qe.ci.distgit',
             '/topic/VirtualTopic.qe.ci.errata',
@@ -99,28 +102,51 @@ class HelgaStompConsumer():
             # logger.debug('ignoring %s' % destination)  # noisy
             return
 
-        # pprint_frame(frame)  # Noisy
+        signal = 'umb.' + destination[20:]
 
-        # Route this destination to a lib under helga_umb.topics.
-        topiclib = 'helga_umb.topics.%s' % destination[20:].replace('-', '_')
+        # note: the smokesignal helga requires is too old for some things we do
+        # here. Fix in https://github.com/shaunduncan/helga/pull/166
+        # 1) ._receivers in 0.5 vs .receivers in 0.7.0
+        # 2) emit() returns nothing in 0.5, and it returns
+        #    Twisted's DeferredList in master (0.8.0, tbd)
+
+        def errback(e):
+            """ Send errors through our main send_err method. """
+            send_err(e, self.client, self.channel)
+
+        if signal not in smokesignal.receivers:
+            # If we don't have anything to process this message, just print its
+            # destination to the channel. In the future we may we want to
+            # silence this, because it's noisy.
+            #self.client.msg(self.channel, signal)
+            # Show datagrepper URLs.
+            msg = signal + ' ' + datagrepper.get_url(frame.headers)
+            self.client.msg(self.channel, msg)
+        d = smokesignal.emit(signal, frame, errback=errback)
+        # d is a twisted.internet.defer.DeferredList
+        d.addCallback(route_product_message, self.client)
+        d.addErrback(send_err, self.client, self.channel)
+        return d
+
+
+def route_product_message(results, client):
+    """ Callback from our smokesignal DeferredList """
+    for msg_and_product in results:
+        if not msg_and_product:
+            # our callback determined the message to be uninteresting.
+            continue
         try:
-            # logger.debug('importing %s' % topiclib)
-            lib = importlib.import_module(topiclib)
-        except ImportError as e:
-            # Show the raw destination value.
-            self.client.msg(self.channel, destination)
-            # logger.debug(e)  # debugging
-            pprint_frame(frame)  # debugging
-            if e.message.startswith('No module named'):
-                # We have no custom code to consume this message.
-                # This is ok, just move on.
-                # (Note: This will skip any import issues in topiclib itself
-                # though.)
-                return
-            else:
-                # Something else went wrong.
-                raise
-        return lib.consume(self.client, self.channel, frame)
+            (msg, product) = msg_and_product
+        except (TypeError, ValueError) as e:
+            # We didn't call back with the right return type.
+            # There's nothing we can do, so just ignore this message.
+            logger.warning(msg_and_product)
+            logger.warning(e)
+            continue
+        channel_matchers = getattr(settings, 'PRODUCT_CHANNELS', {})
+        for regex, channel in channel_matchers.items():
+            if re.search(regex, product, re.I):
+                client.msg(channel, msg)
 
 
 def pprint_frame(frame):
@@ -216,6 +242,8 @@ def subscribed_callback(token, client, channel, destination):
 
 
 def send_err(e, client, channel):
+    # import pdb; pdb.set_trace()
+    # It would be cool to save the entire frame to disk here.
     client.msg(channel, 'stompest error: %s' % e.value)
     # Provide the file and line number.
     tb = e.getBriefTraceback().split()

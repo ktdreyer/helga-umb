@@ -48,6 +48,7 @@ setup(name="helga-umb",
       ],
       tests_require=[
           'pytest',
+          'pytest-twisted',
       ],
       entry_points=dict(
           helga_plugins=[
