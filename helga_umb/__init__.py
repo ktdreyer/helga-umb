@@ -74,6 +74,7 @@ class HelgaStompConsumer():
             '/topic/VirtualTopic.eng.rpmdiff',
             '/topic/VirtualTopic.qe.ci.brew',  # Mirrors everything from brew
             '/topic/VirtualTopic.qe.ci.brew-build',  # some kinda "tests"
+            '/topic/VirtualTopic.qe.ci.centos.messages',  # just heartbeats
             '/topic/VirtualTopic.qe.ci.create-task-repo',
             '/topic/VirtualTopic.qe.ci.distgit',
             '/topic/VirtualTopic.qe.ci.errata',
