@@ -74,6 +74,7 @@ class HelgaStompConsumer():
             '/topic/VirtualTopic.eng.rhchi',  # Container Health Index
             '/topic/VirtualTopic.eng.rpmdeplint',  # TPS replacement
             '/topic/VirtualTopic.eng.rpmdiff',
+            '/topic/VirtualTopic.eng.robosignatory.container.sign', # noisy
             '/topic/VirtualTopic.qe.ci.brew',  # Mirrors everything from brew
             '/topic/VirtualTopic.qe.ci.brew-build',  # some kinda "tests"
             '/topic/VirtualTopic.qe.ci.centos.messages',  # just heartbeats
