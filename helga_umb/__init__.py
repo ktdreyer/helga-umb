@@ -65,6 +65,7 @@ class HelgaStompConsumer():
             '/topic/VirtualTopic.eng.errata.builds.added',
             '/topic/VirtualTopic.eng.errata.builds.changed',
             '/topic/VirtualTopic.eng.errata.builds.removed',
+            '/topic/VirtualTopic.eng.errata.test_run.obsoleted', # covscan
             '/topic/VirtualTopic.eng.imagemanager',  # just heartbeats
             '/topic/VirtualTopic.eng.metaxor',
             '/topic/VirtualTopic.eng.platformci',
