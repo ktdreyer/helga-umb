@@ -59,6 +59,7 @@ class HelgaStompConsumer():
             '/topic/VirtualTopic.eng.brew.sign',
             '/topic/VirtualTopic.eng.cips',  # TPS replacement
             '/topic/VirtualTopic.eng.ci',  # QE groups' Jenkins?
+            '/topic/VirtualTopic.eng.cd.rh-sso',  # SSO Jenkins
             '/topic/VirtualTopic.eng.distill',
             '/topic/VirtualTopic.eng.errata-bridge',
             '/topic/VirtualTopic.eng.errata.activity.batch',
