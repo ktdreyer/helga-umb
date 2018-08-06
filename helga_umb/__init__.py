@@ -51,8 +51,6 @@ class HelgaStompConsumer():
         """
         IGNORE_PREFIX = [
             '/topic/VirtualTopic.eng.brew.build.deleted',
-            '/topic/VirtualTopic.eng.brew.build.tag',
-            '/topic/VirtualTopic.eng.brew.build.untag',
             '/topic/VirtualTopic.eng.brew.import',
             '/topic/VirtualTopic.eng.brew.package',
             '/topic/VirtualTopic.eng.brew.repo',
