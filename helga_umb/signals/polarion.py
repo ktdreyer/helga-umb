@@ -26,7 +26,8 @@ def polarion(frame):
         # Other interesting pieces:
         # jenkins_job_url = frame.headers['jenkins-job-url']
         # log_url = data['log-url']  # 'http://ops-qe-logstash-2.example.com:9981/polarion/RedHatEnterpriseLinux7/20171129-224014.749.log
-        # testrun_url = data['testrun-url']  # https://polarion.engineering.redhat.com/polarion/#/project/RedHatEnterpriseLinux7/testrun?id=RTT-RUN_Tier1_RHEL-7_5-20171129_n_4_Server_ppc64
+        testrun_url = data['testrun-url']  # https://polarion.engineering.redhat.com/polarion/#/project/RedHatEnterpriseLinux7/testrun?id=RTT-RUN_Tier1_RHEL-7_5-20171129_n_4_Server_ppc64  # NOQA: E501
+        project = find_project(testrun_url)
 
     if polarion_type == 'import-testcases':
         data = json.loads(frame.body.decode())
@@ -36,7 +37,7 @@ def polarion(frame):
     mtmpl = "polarion {polarion_type}: {payload}"
     message = mtmpl.format(polarion_type=polarion_type,
                            payload=payload)
-    product = ''  # not sure how to determine this
+    product = project
     return defer.succeed((message, product))
 
 
@@ -67,3 +68,15 @@ def describe_testcases(testcases):
     first = ', '.join(firstdescriptions)
     more = len(testcases) - 3
     return '{first} and {num} more'.format(first=first, num=more)
+
+
+def find_project(testrun_url):
+    """
+    Find a project name from this Polarion testrun URL.
+
+    :param testrun_url: Polarion test run URL
+    :returns: project name eg "CEPH" or "ContainerNativeStorage"
+    """
+    url_suffix = testrun_url[59:]
+    index = url_suffix.index('/')
+    return url_suffix[:index]
