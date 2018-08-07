@@ -26,8 +26,11 @@ def polarion(frame):
         # Other interesting pieces:
         # jenkins_job_url = frame.headers['jenkins-job-url']
         # log_url = data['log-url']  # 'http://ops-qe-logstash-2.example.com:9981/polarion/RedHatEnterpriseLinux7/20171129-224014.749.log
-        testrun_url = data['testrun-url']  # https://polarion.engineering.redhat.com/polarion/#/project/RedHatEnterpriseLinux7/testrun?id=RTT-RUN_Tier1_RHEL-7_5-20171129_n_4_Server_ppc64  # NOQA: E501
-        project = find_project(testrun_url)
+        testrun_url = data.get('testrun-url')  # https://polarion.engineering.redhat.com/polarion/#/project/RedHatEnterpriseLinux7/testrun?id=RTT-RUN_Tier1_RHEL-7_5-20171129_n_4_Server_ppc64  # NOQA: E501
+        if testrun_url:
+            project = find_project(testrun_url)
+        else:
+            project = ''
 
     if polarion_type == 'import-testcases':
         data = json.loads(frame.body.decode())
