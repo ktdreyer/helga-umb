@@ -23,7 +23,7 @@ STOMP_URL = 'failover:(ssl://messaging-devops-broker01.web.prod.ext.phx2.redhat.
 # STOMP_URL = 'failover:(ssl://messaging-devops-broker01.web.stage.ext.phx2.redhat.com:61612,ssl://messaging-devops-broker02.web.stage.ext.phx2.redhat.com:61612)?startupMaxReconnectAttempts=10'  # NOQA: E501
 
 # dev
-# STOMP_URL = 'ssl://messaging-devops-broker01.dev1.ext.devlab.redhat.com:61612'
+# STOMP_URL = 'failover:(ssl://messaging-devops-broker01.dev1.ext.devlab.redhat.com:61612,ssl://messaging-devops-broker02.dev1.ext.devlab.redhat.com:61612)?startupMaxReconnectAttempts=10'  # NOQA: E501
 
 
 # Load our built-in signals:
