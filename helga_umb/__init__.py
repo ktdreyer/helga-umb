@@ -17,13 +17,10 @@ from stompest.async.listener import SubscriptionListener
 from helga_umb import datagrepper
 
 # prod
-STOMP_URL = 'failover:(ssl://messaging-devops-broker01.web.prod.ext.phx2.redhat.com:61612,ssl://messaging-devops-broker02.web.prod.ext.phx2.redhat.com:61612)?startupMaxReconnectAttempts=10'  # NOQA: E501
+STOMP_URL = 'failover:(ssl://umb-broker01.api.redhat.com:61612,ssl://umb-broker01.api.redhat.com:61612)?startupMaxReconnectAttempts=10'  # NOQA: E501
 
 # stage
-# STOMP_URL = 'failover:(ssl://messaging-devops-broker01.web.stage.ext.phx2.redhat.com:61612,ssl://messaging-devops-broker02.web.stage.ext.phx2.redhat.com:61612)?startupMaxReconnectAttempts=10'  # NOQA: E501
-
-# dev
-# STOMP_URL = 'failover:(ssl://messaging-devops-broker01.dev1.ext.devlab.redhat.com:61612,ssl://messaging-devops-broker02.dev1.ext.devlab.redhat.com:61612)?startupMaxReconnectAttempts=10'  # NOQA: E501
+# STOMP_URL = 'failover:(ssl://umb-broker01.stage.api.redhat.com:61612,ssl://umb-broker01.stage.api.redhat.com:61612)?startupMaxReconnectAttempts=10'  # NOQA: E501
 
 
 # Load our built-in signals:
